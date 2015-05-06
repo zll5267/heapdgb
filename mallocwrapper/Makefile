@@ -3,15 +3,15 @@
 #g++ -rdynamic -g WrapperTest.cc -o wrapper
 #LD_PRELOAD=./libmallocwrapper.so ./wrapper
 CC = g++
-CFLAGS = -g
+CFLAGS = -g -Wall
 LIBS = -ldl -lpthread
 INCLUDES = -I ../util/
 SOURCES = MallocInfo.cc Wrapper.cc
 
 lib: ${SOURCES}
-	${CC} -shared -fPIC ${CFLAGS} ${INCLUDES} ${LIBS} $^ -o libmallocwrapper.so
+	${CC} -shared -fPIC ${CFLAGS} ${INCLUDES}  $^ ${LIBS} -o libmallocwrapper.so
 
 test: WrapperTest.cc
-	${CC} ${CFLAGS} ${INCLUDES} ${LIBS} -rdynamic $^ -o wrapper
+	${CC} ${CFLAGS} ${INCLUDES} -rdynamic $^ ${LIBS} -o wrapper
 clean:
 	rm libmallocwrapper.so wrapper

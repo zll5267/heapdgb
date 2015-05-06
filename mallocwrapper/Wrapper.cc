@@ -13,7 +13,7 @@ namespace HeapDBG {
 namespace Wrapper {
     __attribute__((destructor)) static void printStatistic();
     static pthread_mutex_t wrapper_mutex = PTHREAD_MUTEX_INITIALIZER;
-    static size_t malloc_count = 0;
+    static unsigned long malloc_count = 0;
     static std::list<MallocInfo> mallocList;
     static const size_t max_stacktrace_depth = 128;
     static bool useHook = true;
@@ -37,7 +37,8 @@ namespace Wrapper {
             WRAPPER_ERROR("can not find the system free functioin" << dlerror());
             return false;
         }
-        //WRAPPER_DEBUG("sysmalloc:0x"<<std::hex<<(unsigned long)sys_malloc << ";sysfree:0x" << (unsigned long)sys_free << std::dec);
+        //WRAPPER_DEBUG("sysmalloc:0x"<<std::hex<<(unsigned long)sys_malloc);
+        //WRAPPER_DEBUG("sysfree:0x" << (unsigned long)sys_free << std::dec);
         return true;
     }
     //guarantee the system malloc/free initialized
@@ -110,7 +111,10 @@ namespace Wrapper {
 		tnLeft -= tLen;
         if (mallocList.empty())
         {
-            tLen = snprintf(tpBody, tnLeft, "Found no leaks, not one of the %d allocations was not released.allocations was not released." , malloc_count);
+            tLen = snprintf(tpBody, tnLeft,
+                "Found no leaks, not one of the %lu allocations was not released.allocations was not released." ,
+                malloc_count);
+
 			tpBody += tLen;
 			tnLeft -= tLen;
 			snprintf(tpBody, tnLeft, "</body></html>");
@@ -118,21 +122,26 @@ namespace Wrapper {
         else
         {
 			//std::cout << "body1:" << body << std::endl;
-            tLen = snprintf(tpBody, tnLeft, " detected that %d out of %d allocations were not released.<p>", mallocList.size(), malloc_count);
+            tLen = snprintf(tpBody, tnLeft,
+                            " detected that %lu out of %lu allocations were not released.<p>",
+                            mallocList.size(), malloc_count);
 			tpBody += tLen;
 			tnLeft -= tLen;
 			//std::cout << "body2:" << body << std::endl;
-            int i = 0;
+            unsigned long i = 0;
             for(std::list<MallocInfo>::iterator it = mallocList.begin();
                 it != mallocList.end(); ++it)
             {
                 MallocInfo mallocInfo = *it;//mallocList[i];
-				tLen = snprintf(tpBody, tnLeft, "Leak %d@threadID: %d; leaked %d bytes as position 0x%x", ++i, mallocInfo.getThreadID(), mallocInfo.getSize(), mallocInfo.getAddress());
+				tLen = snprintf(tpBody, tnLeft,
+                                "Leak %lu@threadID: %d; leaked %lu bytes as position 0x%lx",
+                                ++i, mallocInfo.getThreadID(), mallocInfo.getSize(), mallocInfo.getAddress());
+
 				tpBody += tLen;
 				tnLeft -= tLen;
 
                 const std::vector<std::string>& stacktrace = mallocInfo.getStackTrace();
-                for (int j = 0; j < stacktrace.size(); ++j)
+                for (size_t j = 0; j < stacktrace.size(); ++j)
                 {
 					tLen = snprintf(tpBody, tnLeft, "<p>&nbsp;&nbsp;&nbsp;&nbsp%s<p>", stacktrace[j].c_str());
 					tpBody += tLen;
@@ -170,7 +179,7 @@ namespace Wrapper {
                 std::cout << std::hex << mallocInfo.getAddress() << std::dec << std::endl;
 
                 const std::vector<std::string>& stacktrace = mallocInfo.getStackTrace();
-                for (int j = 0; j < stacktrace.size(); ++j)
+                for (size_t j = 0; j < stacktrace.size(); ++j)
                 {
                     std::cout << "\t" << stacktrace[j] << std::endl;
                 }

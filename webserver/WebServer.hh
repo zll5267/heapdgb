@@ -12,7 +12,8 @@ namespace WebServer {
     class WebServer
     {
         public:
-            WebServer(const char* hostname, const char* service = NULL, int family = AF_INET, int socktype = SOCK_STREAM);
+            WebServer(const char* hostname, const char* service = NULL,
+                      int family = AF_INET, int socktype = SOCK_STREAM);
             ~WebServer();
 
             /**

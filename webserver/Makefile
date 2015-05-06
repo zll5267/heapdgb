@@ -2,7 +2,7 @@
 #g++ -I ../util/ Resolver.cc WebRequestHandler.cc WebServer.cc WebServerTest.cc -o webServer
 #http://127.0.0.1:7676/heapdbg
 CC = g++
-CFLAGS = -g
+CFLAGS = -g -Wall
 INCLUDES = -I ../util/
 SOURCES = Resolver.cc WebRequestHandler.cc WebServer.cc WebServerTest.cc
 

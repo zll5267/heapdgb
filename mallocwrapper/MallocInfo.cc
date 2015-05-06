@@ -10,7 +10,7 @@ namespace Wrapper {
         mAddress = (long)address;
         mSize = size;
 
-        for (int i = 0; i < depth; ++i)
+        for (size_t i = 0; i < depth; ++i)
         {
             std::string frame = stacktrace[i];
             mStackTrace.push_back(frame);

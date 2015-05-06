@@ -3,7 +3,8 @@
 
 void printUsage(const char *filename)
 {
-    std::cout << "The usage for this tool: " << filename << " [-n hostname] [-p portnum] [-v ipversion] [-t socktype] [-h help]" << std::endl;
+    std::cout << "The usage for this tool: " << filename <<
+    std::cout << " [-n hostname] [-p portnum] [-v ipversion] [-t socktype] [-h help]" << std::endl;
     std::cout << "                         " << "hostname : " << "[]" << std::endl;
     std::cout << "                         " << "portnum  : " << "[]" << std::endl;
     std::cout << "                         " << "ipversion: " << "[4|6] " << std::endl;

@@ -23,7 +23,9 @@ namespace WebServer {
         //WEBSERVER_DEBUG("method:" << method << ";uri:" << uri << ";version:" << version);
         if (strcasecmp(method, "GET"))
         {
-            requestError(clientfd, method, "501", "Not Implemented", "This method is not supported by HeapDBG WebServer");
+            requestError(clientfd, method,
+                         "501", "Not Implemented",
+                         "This method is not supported by HeapDBG WebServer");
             return;
         }
         if (!strcasecmp(uri, "/heapdbg"))
@@ -33,7 +35,9 @@ namespace WebServer {
         else
         {
             //WEBSERVER_ERROR("wrong access path:" << uri << "; only accept /heapdbg");
-            requestError(clientfd, uri, "501", "Not Implemented", "This uri is not supported by HeapDBG WebServer, only accept /heapdbg");
+            requestError(clientfd, uri,
+                         "501", "Not Implemented",
+                         "This uri is not supported by HeapDBG WebServer, only accept /heapdbg");
         }
         close(clientfd);
     }
@@ -44,7 +48,9 @@ namespace WebServer {
         //WEBSERVER_DEBUG("enter WebRequestHandler::generateResponse");
         char buf[MAXLINE] = {0}, body[MAXLINE] = {0}, response[MAXBUF] = {0};
         /*build the body*/
-        sprintf(body, "<html><title>Welcome</title><body><p>Hello World, welcome %d to HeapDBG</body></html>", ++generateCounts);
+        sprintf(body,
+                "<html><title>Welcome</title><body><p>Hello World, welcome %d to HeapDBG</body></html>",
+                ++generateCounts);
 
         /*build response header*/
         sprintf(buf, "HTTP/1.0 200 OK\r\n");
@@ -58,7 +64,8 @@ namespace WebServer {
         HeapDBG::Util::iwrite(fd, response, strlen(response));
     }
 
-    void WebRequestHandler::requestError(int fd, const char *cause, const char *errnum, const char *shortmsg, const char *longmsg)
+    void WebRequestHandler::requestError(int fd, const char *cause, const char *errnum,
+                                         const char *shortmsg, const char *longmsg)
     {
         char buf[MAXLINE] = {0}, body[MAXLINE] = {0}, response[MAXBUF] = {0};
         /*build the body*/

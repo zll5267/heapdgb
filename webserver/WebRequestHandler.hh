@@ -11,7 +11,7 @@ namespace WebServer {
     {
     public:
         WebRequestHandler();
-        ~WebRequestHandler();
+        virtual ~WebRequestHandler();
 
         void handle(int clientfd);
         /*return the http response*/

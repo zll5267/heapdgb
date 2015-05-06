@@ -11,7 +11,8 @@ namespace WebServer {
     class Resolver
     {
         public:
-            Resolver(const char* hostname, const char* service = NULL, int family = AF_INET, int socktype = SOCK_STREAM);
+            Resolver(const char* hostname, const char* service = NULL,
+                     int family = AF_INET, int socktype = SOCK_STREAM);
             ~Resolver();
 
             /*

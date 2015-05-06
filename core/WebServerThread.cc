@@ -1,6 +1,8 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "log.h"
 #include "util.h"
@@ -28,14 +30,16 @@ namespace Core {
 
 	void* WebServerThread::startWebServer(void *arg)
 	{
-		HeapDBG::WebServer::WebServer webServer("192.168.1.105", "7676");
+		HeapDBG::WebServer::WebServer webServer("localhost", "7676");
 		webServer.setHandler(new MallocWrapperRequestHandler());
 		int ret = webServer.start();
 		if (!ret)
 		{
 			CORE_ERROR("web server start fail");
+			//if start webserver fail, we kill the process
 			exit(-1);
 		}
+		return NULL;
 	}
 
 } // Core
